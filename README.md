@@ -60,11 +60,19 @@
 
 ## 🚀 快速上手
 
-### 运行环境要求
-- **Node.js**：`>= 18.0.0`（推荐 Node.js 20+ 或 22+）
-- **npm**、**pnpm** 或 **yarn**
+### 方式一：下载 Windows 电脑安装包（最简便）
 
-### 1. 源码运行（推荐）
+无需配置任何 Node.js 或开发环境，直接下载安装包即可使用：
+
+1. 前往 **[GitHub Releases 页面](https://github.com/vinhduonglam9-arch/LibreTV/releases/tag/v2.0)** 下载 `LibreTV-2.0.0-Setup.exe`。
+2. 双击安装程序，按提示完成安装（自动创建桌面快捷方式与开始菜单图标）。
+3. 双击桌面快捷方式即可直接启动 LibreTV 桌面客户端！
+
+---
+
+### 方式二：源码运行
+
+**环境要求**：Node.js `>= 18.0.0`
 
 ```bash
 # 1. 克隆本仓库
