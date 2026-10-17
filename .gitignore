@@ -1,11 +1,13 @@
 node_modules/
 .next/
 out/
-.env
 .env*.local
 *.tsbuildinfo
 vitest-results.json
 *.log
+
+# 本机工具
+omp-windows-x64.exe
 
 # AI 工具产物（本机会话/缓存数据，不入库）
 .mimosa/

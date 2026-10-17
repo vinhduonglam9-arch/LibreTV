@@ -1,0 +1,78 @@
+{
+  "name": "LibreTV 精选数据源",
+  "version": 2,
+  "sources": [
+    {
+      "name": "极速资源",
+      "url": "https://jszyapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "光速资源",
+      "url": "https://api.guangsuapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "金鹰资源",
+      "url": "https://jyzyapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "豪华资源",
+      "url": "https://hhzyapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "虎牙资源",
+      "url": "https://www.huyaapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "百度资源",
+      "url": "https://api.apibdzy.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "魔都动漫",
+      "url": "https://caiji.moduapi.cc/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "红牛资源",
+      "url": "https://www.hongniuzy2.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "非凡资源",
+      "url": "https://cj.ffzyapi.com/api.php/provide/vod",
+      "isAdult": false
+    },
+    {
+      "name": "优质资源",
+      "url": "https://api.1080zyku.com/inc/apijson.php",
+      "isAdult": false
+    }
+  ],
+  "liveSources": [
+    {
+      "name": "央视卫视精选 (IPv4)",
+      "url": "https://live.zbds.top/tv/iptv4.m3u",
+      "epg": "http://epg.51zmt.top:8000/e.xml"
+    },
+    {
+      "name": "国内精选电视",
+      "url": "https://cdn.jsdelivr.net/gh/Guovin/iptv-api@gd/output/result.m3u",
+      "epg": "https://epg.pw/xmltv/epg_CN.xml"
+    },
+    {
+      "name": "中国频道 (IPTV-Org)",
+      "url": "https://iptv-org.github.io/iptv/countries/cn.m3u",
+      "epg": "https://epg.pw/xmltv/epg_CN.xml"
+    },
+    {
+      "name": "中文精选 (IPTV-Org)",
+      "url": "https://iptv-org.github.io/iptv/languages/zho.m3u",
+      "epg": "https://epg.pw/xmltv/epg_CN.xml"
+    }
+  ]
+}
