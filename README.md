@@ -1,246 +1,158 @@
-# LibreTV
+# LibreTV 2.0
 
-LibreTV Next.js 迁移版：免费在线视频聚合搜索与观看平台。基于 Next.js 15（App Router）+ TypeScript + Tailwind CSS，播放内核为 ArtPlayer + hls.js，支持亮暗双主题。
+> 免费、开源、开箱即用的在线影视聚合搜索与电视直播平台（电脑版 / Web 版）
 
-> 🏠 **官网**：[LibreTV 官网](https://libretv.is-an.org/)
->
-> 🌐 **演示站**：[tv.bagiinlink.eu.org](https://tv.bagiinlink.eu.org)（访问密码：`libretv`）
->
-> 📖 **完整文档**：[文档首页](https://libretv.is-an.org/wiki/) · [架构](https://libretv.is-an.org/wiki/Architecture.html) · [部署](https://libretv.is-an.org/wiki/Deployment.html) · [配置](https://libretv.is-an.org/wiki/Configuration.html) · [数据源](https://libretv.is-an.org/wiki/Data-Sources.html) · [直播 / IPTV](https://libretv.is-an.org/wiki/Live-IPTV.html) · [首页推荐](https://libretv.is-an.org/wiki/Recommendations.html) · [播放器](https://libretv.is-an.org/wiki/Player.html) · [代理与安全](https://libretv.is-an.org/wiki/Proxy-Security.html) · [FAQ](https://libretv.is-an.org/wiki/FAQ.html)
->
+[![Version](https://img.shields.io/badge/version-2.0-red.svg)](https://github.com/vinhduonglam9-arch/LibreTV)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](./LICENSE)
 
-<p align="center">
- <a href="https://trendshift.io/repositories/26551?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-26551" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/26551" alt="LibreSpark%2FLibreTV | Trendshift" width="250" height="55"/></a> <a href="https://trendshift.io/repositories/26551?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-26551" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/26551/weekly?language=JavaScript" alt="LibreSpark%2FLibreTV | Trendshift" width="250" height="55"/></a>
-</p>
+---
 
-## 核心特性
+## 📖 项目简介
 
-- **聚合搜索**：多采集站服务端并行搜索
-- **跨源同名聚合**：同名影片合并为一张卡片，展开即可比较和选择各来源
-- **HLS 播放**：ArtPlayer + hls.js，广告分片过滤、自动连播、倍速、快捷键、移动端长按 3 倍速
-- **直播 / IPTV**：M3U 订阅解析，`/live` 页面按分组浏览、搜索频道并站内播放（HLS + HTTP-FLV），支持 XMLTV 节目单（EPG）与频道收藏；直播流经专用长连接代理（`/api/live/stream`）转发
-- **进度同步**：播放进度与观看历史存于本机 IndexedDB，精确到秒的续播
-- **换源测速**：跨源搜索同名资源并测速排序，一键切换保留集数位置
-- **源测试与订阅**：一键探活点播源与直播源（支持批量测活）；搜索时自动记录各源健康度，连续失败的源按阶梯时长自动停用（30 分钟 → 24 小时 → 长期），可一键恢复；订阅远程源列表（一份 LibreTV-SourceList JSON 可同时下发点播源与直播源，也可直接填 TVBOX 配置地址，自动导入其中可直接使用的接口），可导出分享
-- **首页推荐**：豆瓣（电影/剧集分类浏览）、Bangumi 新番放送表或影视榜单（豆瓣周榜 + 百度热播，经 60s API），设置中切换；均服务端直连 + 缓存，Bangumi/榜单免 key 免配置（`60S_API_BASE` 可指向自部署 60s 实例）
-- **PWA**：可安装到桌面 / 主屏幕，亮暗双主题无首屏闪烁
+**LibreTV 2.0** 是基于 Next.js 15（App Router）+ TypeScript + Tailwind CSS 构建的高性能影视聚合观看平台。播放内核由 **ArtPlayer + hls.js** 驱动，支持硬件解码、广告分片过滤、跨源同名影片聚合、记忆断点续播以及全国高清电视直播。
 
-## 部署
+本项目已**全面预置并测活 10 大苹果 CMS 公网点播采集站与全国 IPv4 电视直播源**，无需繁琐配置，拉取即可开箱即搜即看！
 
-### Docker（推荐）
+---
 
-```bash
-# 在 .env 中设置 PASSWORD
-echo "PASSWORD=your-password" > .env
+## ✨ 核心特性
 
-# 方式一：拉取发布镜像（零构建）
-docker compose pull && docker compose up -d
+- 🎬 **10 大高质量点播源开箱即用**：内置 10 组实测 200/206 且原生支持 CORS 的公网采集站（极速、光速、金鹰、豪华、虎牙、百度、魔都动漫、红牛、非凡、优质资源等），彻底告别切片 404 失效。
+- 🔍 **服务端并行聚合搜索**：输入片名同时抓取所有有效源，毫秒级合并展示；同名影片归一为单卡片，方便比对画质与剧集完整度。
+- 🔄 **智能换源与测速**：观影时支持一键换源，系统自动在不同资源站间测速排序，无缝切换并保持当前集数与播放时间。
+- 📺 **全国高清电视直播**：内置全国 500+ 高清电视频道（央视全套、各省卫视、中文综合频道），支持 XMLTV 电子节目单（EPG）与分类筛选。
+- ⏩ **专业级观影控制**：ArtPlayer + hls.js 驱动，支持快捷键、0.5x~3.0x 多倍速、自动连播下一集、广告分片智能剔除。
+- 💾 **本地隐私存储**：播放历史与续播进度完全保存在本机浏览器 IndexedDB，不上传隐私，支持精确到秒的无缝断点续播。
+- 🏠 **局域网家庭影音中心**：一台电脑部署，局域网内任意手机、电脑、平板或智能电视浏览器均可免装 App 直接输入 IP 观影。
 
-# 方式二：源码构建
-docker compose up -d --build
-```
+---
 
-### Docker Compose
+## 📡 内置预设数据源
 
-```yaml
-services:
-  libretv:
-    image: ghcr.io/librespark/libretv:latest
-    container_name: libretv
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    environment:
-      - PASSWORD=change-me   # 必填：访问密码，务必修改
-      # - PROXY_SECRET=your-secret          # 会话/代理签名密钥，多实例部署建议设置
-      # - DEFAULT_SOURCES=[{"name":"示例源","url":"https://example.com/api.php/provide/vod"}]
-      # - DEFAULT_LIVE_SOURCES=[{"name":"示例直播源","url":"https://example.com/list.m3u"}]
-      # - DEFAULT_SUBSCRIPTIONS=["https://example.com/sources.json"]  # 预置订阅，自动导入点播源+直播源
-      # - DEFAULT_RECOMMEND_SOURCE=douban  # 首页推荐数据源默认值（douban/bangumi/hot-list），仅对未主动选择过的用户生效
-      # - LIVE_ALLOW_PRIVATE=1              # 自建内网 IPTV 源时开启
-```
+### 1. 点播采集源（已在 `.env` 中预置 `DEFAULT_SOURCES`）
 
-> 其余可选变量见下方[环境变量](#环境变量)表；仓库内的 `docker-compose.yml` 含完整注释版本（含 `build: .` 源码构建分支）。
+| 采集站名称 | 接口协议 | 接口特性 | 支持分类 |
+| :--- | :--- | :--- | :--- |
+| **极速资源** | Apple CMS | 原生 CORS 放行 / 200 高速 | 电影、电视剧、综艺、动漫 |
+| **光速资源** | Apple CMS | 原生 CORS 放行 / 200 高速 | 电影、电视剧、综艺、动漫 |
+| **金鹰资源** | Apple CMS | 206 范围传输 / 流畅播放 | 电影、电视剧、短剧、动漫 |
+| **豪华资源** | Apple CMS | 原生 CORS 放行 / 200 高速 | 电影、热播剧集、综艺 |
+| **虎牙资源** | Apple CMS | 原生 CORS 放行 / 1080P 高清 | 电影、电视剧、动作、动漫 |
+| **百度资源** | Apple CMS | 206 流式传输 / 资源丰富 | 电影、电视剧、综艺、少儿 |
+| **魔都动漫** | Apple CMS | 原生 CORS 放行 / 动漫专区 | 日本新番、国漫热血、剧场版 |
+| **红牛资源** | Apple CMS | 206 范围传输 / 线路稳定 | 电影、电视剧、战争、纪录片 |
+| **非凡资源** | Apple CMS | 206 范围传输 / 独播资源丰富 | 华语热播剧、院线电影 |
+| **优质资源** | Apple CMS | 206 范围传输 / 1080P 专线 | 蓝光原盘、高清电影 |
 
-```bash
-docker compose pull && docker compose up -d
-```
+### 2. 电视直播源（已在 `.env` 中预置 `DEFAULT_LIVE_SOURCES`）
 
-> ⚠️ **生产部署必须通过 HTTPS 访问**（localhost 除外）：生产模式下会话 cookie 带 `Secure` 标记，浏览器只在 HTTPS（或 localhost）下保存它。因此用 `http://服务器IP:端口` 访问时，会出现"密码正确却无法登录"的现象——登录请求实际成功，但 cookie 被浏览器丢弃。请通过反向代理（Nginx / Caddy / Traefik）或 Cloudflare 等为站点套上 TLS 后再对外提供服务；本地开发用 `localhost` 不受影响。
+| 直播源分类 | 频道数量 | 播放列表格式 | 配套 EPG 节目单 |
+| :--- | :--- | :--- | :--- |
+| **央视卫视精选 (IPv4)** | 520+ 频道 | 标准 M3U8 直播流 | 支持（全国全时段电视节目单） |
+| **国内精选电视** | 200+ 频道 | 标准 M3U8 直播流 | 支持（央视、卫视、综合频道） |
+| **中国综合频道** | 147 频道 | 标准 M3U8 直播流 | 支持（IPTV-Org 国际索引） |
+| **中文精选频道** | 215 频道 | 标准 M3U8 直播流 | 支持（全球中文广播与电视频道） |
 
-镜像发布在 GHCR 与 Docker Hub：`ghcr.io/librespark/libretv` 与 `docker.io/bestzwei/libretv`
-（`latest` / `主.次` / 完整版本号三个 tag，`linux/amd64` 与 `linux/arm64` 双架构，
-两个 registry 的镜像 digest 一致）。需要固定版本时在 `.env` 中设置
-`LIBRETV_IMAGE=ghcr.io/librespark/libretv:2.0.1`。
+---
 
-> 版本号以 `package.json` 为单一来源，部署后可用 `/api/status` 返回的 `version` 字段核对。详见[部署文档](https://libretv.is-an.org/wiki/Deployment.html)。
+## 🚀 快速上手
 
-### 手动运行
+### 运行环境要求
+- **Node.js**：`>= 18.0.0`（推荐 Node.js 20+ 或 22+）
+- **npm**、**pnpm** 或 **yarn**
+
+### 1. 源码运行（推荐）
 
 ```bash
+# 1. 克隆本仓库
+git clone https://github.com/vinhduonglam9-arch/LibreTV.git
+cd LibreTV
+
+# 2. 安装项目依赖
 npm install
-PASSWORD=your-password npm run build
-PASSWORD=your-password npm start   # 监听 8080
+
+# 3. 生产打包构建
+npm run build
+
+# 4. 启动服务（默认监听 8080 端口）
+npm start
 ```
 
-### 环境变量
+启动完成后，打开浏览器访问：
+- **本机访问**：[http://localhost:8080](http://localhost:8080)
+- **局域网访问**：`http://<电脑的局域网IP>:8080`
+- **默认访问密码**：`libretv`
 
-| 变量 | 必填 | 说明 |
-| --- | --- | --- |
-| `PASSWORD` | 是 | 访问密码；未设置时站点会提示管理员配置 |
-| `PROXY_SECRET` | 否 | 会话/代理签名密钥；不设置时从 PASSWORD 派生（多实例部署建议显式设置） |
-| `DEFAULT_SOURCES` | 否 | 预置采集站（JSON 数组），用户端自动出现且默认勾选，详见[配置文档](https://libretv.is-an.org/wiki/Configuration.html) |
-| `REQUEST_TIMEOUT` | 否 | 代理上游请求超时（毫秒），默认 8000 |
-| `MAX_RETRIES` | 否 | 代理请求重试次数，默认 1 |
-| `SEARCH_MAX_PAGES` | 否 | 每个搜索源最多抓取的页数（1-50，默认 5）。第一页会读取源站 `pagecount`，实际页数 = min(源站总页数，该值)；页间并行请求，单页失败只丢该页 |
-| `SEARCH_SOURCE_TIMEOUT_MS` | 否 | 单个搜索源的总死线（毫秒，3s-60s，默认 10000）：该源所有分页请求须在时限内完成，到点中断并将其标记为「超时」；健康度自动停用也以此为超时判定依据 |
-| `USER_AGENT` | 否 | 代理请求使用的 UA（豆瓣封面防盗链等场景），默认 Chrome UA |
-| `FALLBACK_CORS_PROXY` | 否 | 豆瓣推荐数据直连被拒时降级使用的 CORS 代理地址 |
-| `COOKIE_SECURE` | 否 | 显式覆盖会话 cookie 的 `Secure` 标记（`true` / `false`）；默认按请求协议自动推导。反向代理未正确传递 `x-forwarded-proto` 导致 HTTPS 下登录失效时，设为 `true` 可解 |
-| `60S_API_BASE` | 否 | 影视榜单推荐源（60s API）实例地址，默认 `https://60s.crystelf.top`；有限流，高频使用可[自部署](https://github.com/vikiboss/60s) |
-| `DEFAULT_LIVE_SOURCES` | 否 | 预置直播源（M3U 订阅），JSON 数组：`[{"name":"源名","url":"https://.../list.m3u","epg":"https://.../epg.xml.gz"}]`，`epg` 为可选的 XMLTV 节目单地址 |
-| `DEFAULT_SUBSCRIPTIONS` | 否 | 预置数据源订阅（LibreTV-SourceList JSON 链接，也接受 TVBOX 配置地址），JSON 数组：`["https://.../sources.json", {"url":"https://.../list.json","name":"名称"}]`。首次访问自动导入点播源与直播源，之后每 24h 静默刷新；用户删除后不再自动加回 |
-| `DEFAULT_RECOMMEND_SOURCE` | 否 | 首页推荐数据源的默认值（`douban` / `bangumi` / `hot-list`，出厂默认 `hot-list`）；仅对未在设置中主动选择过的用户生效，用户的选择始终优先 |
-| `LIVE_ALLOW_PRIVATE` | 否 | 设为 `1` 时允许直播流代理访问内网/保留地址（自建 IPTV 场景），默认关闭以维持 SSRF 防护 |
+---
 
-## 使用说明
+### 2. Docker Compose 部署
 
-1. **添加点播源**：设置 → 源管理 → 点播源 → 添加 API，填入 Apple CMS 采集站地址（如 `https://example.com/api.php/provide/vod`），可选填详情页地址（部分源需要爬详情页提取播放地址）。
-2. **搜索**：勾选点播源后输入片名；搜索通过服务端聚合，个别源失败不影响整体结果。
-3. **播放**：详情弹窗选择剧集进入 `/watch`；支持快捷键（空格/←→/↑↓/F/Alt+←→）、移动端长按 3 倍速、自动连播、换源测速。观看/暂停时后续分片自动缓存到本地（设置可关），播放页可「下载本集」（TS/MP4）离线观看。
-4. **进度与历史**：自动保存在本设备 IndexedDB，仅定位信息入库，播放时自动同步最新剧集。
-5. **配置迁移**：设置 → 数据 → 配置导入导出（兼容旧版 LibreTV-Settings JSON 的历史记录迁移）。
-
-## 直播 / IPTV
-
-1. **添加直播源**：设置 → 源管理 → 直播源 → 填入 M3U/M3U8 地址（可选填 XMLTV 节目单地址），添加后自动探活并显示频道数量；也可在「源管理 → 数据源订阅」中与点播源一起订阅导入；部署者还可用 `DEFAULT_LIVE_SOURCES` 环境变量预置。
-2. **观看**：进入「直播」页，按分组标签筛选或搜索频道，点击即播；支持 HLS（m3u8）与 HTTP-FLV 两种直播流，直连失败自动走代理通道重试。
-3. **节目单**：频道带 `tvg-id` 且订阅配置了 EPG 地址时，展示当前/接下来节目与播放进度。
-4. **收藏与导出**：频道可收藏；订阅可一键导出为标准 M3U 文件，供 PotPlayer / VLC 等外部播放器使用。
-
-完整说明见 [直播 / IPTV 文档](https://libretv.is-an.org/wiki/Live-IPTV.html)。
-
-> ⚠️ 项目不内置任何频道源，也不存储、不制作任何直播内容，仅提供第三方公开播放列表的解析与播放能力，内容的合法性由对应数据源负责。内网自建源默认被 SSRF 防护拦截，自部署者可显式设置 `LIVE_ALLOW_PRIVATE=1` 放行。
-
-## 数据源订阅 / 分享
-
-数据源（点播源 + 直播源）可以 **导出为一份 JSON → 托管到公开 URL → 他人在「设置 → 源管理 → 数据源订阅」里填入该 URL 订阅**。
-
-托管地址没有特殊要求，可用 [npoint.io](https://www.npoint.io/) 免费托管 JSON（粘贴内容即可得到一个公开 URL），Gist、对象存储、任意静态托管同样可用。
-
-### 订阅格式（LibreTV-SourceList JSON）
-
-```json
-{
-  "name": "我的源列表",
-  "version": 2,
-  "sources": [
-    {
-      "name": "示例点播源",
-      "url": "https://example.com/api.php/provide/vod",
-      "detail": "https://example.com",
-      "isAdult": false
-    }
-  ],
-  "liveSources": [
-    {
-      "name": "示例直播源",
-      "url": "https://example.com/list.m3u",
-      "epg": "https://example.com/epg.xml.gz"
-    }
-  ]
-}
-```
-
-**字段说明**：
-
-| 字段 | 位置 | 类型 | 必填 | 说明 |
-| --- | --- | --- | --- | --- |
-| `name` | 顶层 | string | 否 | 列表名称，订阅后显示在订阅条目上；缺省时显示订阅地址主机名 |
-| `version` | 顶层 | number | 否 | 格式版本，当前为 `2`（新增 `liveSources`）；导入端目前忽略该字段 |
-| `sources` | 顶层 | array | 否 | **点播源**数组（Apple CMS 采集站），最多 100 个，超出部分截断 |
-| `sources[].name` | 项 | string | 否 | 源显示名；缺省时使用 URL 主机名 |
-| `sources[].url` | 项 | string | **是** | Apple CMS 采集接口地址（公网 http/https），结尾 `/` 自动去除 |
-| `sources[].detail` | 项 | string | 否 | 详情页根地址，用于列表接口拿不到播放地址、需要爬详情页提取 m3u8 的源 |
-| `sources[].isAdult` | 项 | boolean | 否 | 成人内容标记，默认 `false`。标记为 `true` 的源名称旁显示 **(18+)** 徽章；设置中的「成人内容过滤」开启（默认开启）时该源不可勾选、不参与搜索，需先关闭过滤才能启用 |
-| `liveSources` | 顶层 | array | 否 | **直播源**数组（M3U 播放列表），最多 50 个，超出部分截断 |
-| `liveSources[].name` | 项 | string | 否 | 源显示名；缺省时使用 URL 主机名 |
-| `liveSources[].url` | 项 | string | **是** | M3U 播放列表地址（http/https） |
-| `liveSources[].epg` | 项 | string | 否 | XMLTV 节目单地址（`xml` / `xml.gz`），用于 `/live` 页展示节目单；地址非法时只丢弃该字段、保留整条源 |
-
-**兼容与限制**：
-
-- 只写 `sources` 的老订阅照常可用（纯点播），只写 `liveSources` 则是纯直播订阅；两者都缺时提示「订阅内容格式不正确」；裸数组 `[{ "name": "...", "url": "..." }]` 视为点播源；
-- 按 `url` 去重（先到先得）；非 http(s) 地址会被过滤；**点播源**另需为公网地址（内网/回环/保留地址会被静默过滤），**直播源**在部署者设置 `LIVE_ALLOW_PRIVATE=1` 时可使用内网自建源地址；
-- 订阅由**服务端**拉取（拉取前经过 SSRF 校验），因此订阅地址**无需配置 CORS**，Gist、对象存储、任意静态托管均可。
-
-### 兼容 TVBOX 配置
-
-订阅地址也可以直接填 **TVBOX 配置**（形如 `{"sites": [...], "lives": [...], "parses": [...]}`）：服务端按内容结构自动识别格式，无需手动选择。
-
-- **点播源**：导入 `sites` 中 `type: 1` 的 JSON 接口（即 Apple CMS 采集站）；部分共享配置省略 `type` 或写成 `0`，但地址命中 `api.php/provide/vod` 时同样导入；站点自身标记 `searchable: 0`（不可搜索）时跳过；
-- **直播源**：导入 `lives` 中 `type: 0`（或省略）的 M3U 播放列表，`epg` 字段一并带上；txt 频道列表与单仓 JSON 不支持；
-- **Spider 类站点会跳过**：`type: 3` 的 Spider（`csp_*` / `.jar` / `.js` / `.py`）需要 TVBOX 自身的 Spider 引擎才能运行，Node 侧无法执行；XML 接口、外链 JSON 同理。被跳过的条目不影响其余导入，导入结果会如实提示，如「已同步 8 个点播源、2 个直播源（TVBOX 配置）；跳过 96 个不可用条目（Spider 引擎 92、XML 接口 4）」；
-- TVBOX 配置常含上百条站点且以 Spider 为主，**只导入个位数到十几个属正常现象**；
-- **格式容错**：配置里的 `//` 注释、尾随逗号、字符串内未转义的换行会自动修正后再解析（共享配置中很常见，TVBOX 客户端用的 fastjson 同样容忍这些写法）；
-- 其他限制：订阅地址需直接返回 JSON（Base64 / 压缩包装的分享链接不支持）；TVBOX「多仓」配置（顶层为 `urls` 数组）不支持，请填单仓配置；地址公网校验、去重与数量上限与上方格式完全一致。
-
-### 订阅行为
-
-- **订阅**：设置 → 源管理 → 数据源订阅 → 填入订阅地址 → 「订阅」，导入的点播源自动勾选、直播源自动启用，均带「订阅」标识，条目上显示「点播 N · 直播 M」；
-- **同步**：订阅条目上的 **⟳** 手动强制同步，整体替换该订阅名下的点播源与直播源；
-- **管理边界**：订阅源以远端列表为准，单独编辑会在下次同步时被覆盖，单独移除会在重新同步时恢复；如需调整请改远端列表，或直接删除整个订阅。删除订阅时点播源全部移除；直播源为**多归属共享**——同一 M3U 可被多个订阅引用（名称/EPG 以首次导入为准），删除订阅或远端列表中移除该源后再同步，都只摘除本订阅的引用，仅当不再被任何订阅引用时才移除该源，手动添加的源不受同步影响，**收藏的频道始终保留**；
-- **导出分享**：设置 → 源管理 → 数据源订阅 → 「导出数据源」，把当前全部点播源与直播源（预置 + 手动 + 订阅，按 URL 去重）导出为上述 JSON；也可用「发布为链接」，把当前**已勾选启用**的源一键上传到公开粘贴板（paste.rs，失败自动降级 0x0.st），直接返回可填入订阅框的 URL，无需自备托管。注意：发布的内容**公开可读**，且每次发布生成新链接、不支持覆盖更新，需长期稳定请用导出 + 自行托管。
-
-> 订阅由服务端拉取（经过 SSRF 校验），因此订阅地址无需配置 CORS。完整说明见 [数据源文档](https://libretv.is-an.org/wiki/Data-Sources.html)。
-
-## 开发
+项目根目录已附带 `docker-compose.yml`，执行以下命令即可一键容器化部署：
 
 ```bash
-npm install
-PASSWORD=dev-password npm run dev   # http://localhost:8080
-npm test                            # 核心库单元测试（cms-parser / m3u8 / ssrf）
+# 启动容器
+docker compose up -d
+
+# 查看运行日志
+docker compose logs -f
+```
+
+---
+
+## ⚙️ 配置文件说明（.env）
+
+项目根目录包含 `.env` 文件，所有关键参数均支持自由调节：
+
+| 参数名 | 默认值 | 作用说明 |
+| :--- | :--- | :--- |
+| `PASSWORD` | `libretv` | **必填**：站点访问密码（防止公开部署被滥用） |
+| `COOKIE_SECURE` | `false` | **重要**：设为 `false` 允许在 HTTP/局域网访问下正常保存登录会话 |
+| `REQUEST_TIMEOUT` | `8000` | 代理与上游采集站请求超时时限（毫秒） |
+| `MAX_RETRIES` | `1` | 上游接口请求失败时的重试次数 |
+| `DEFAULT_SOURCES` | JSON 数组 | 预置点播采集源配置（已内置 10 大已测活高速源） |
+| `DEFAULT_LIVE_SOURCES` | JSON 数组 | 预置直播频道源（已内置央视、卫视全国频道列表） |
+| `DEBUG` | `false` | 是否开启服务端详细调试日志 |
+
+> 提示：`public/sources.json` 提供了符合 `LibreTV-SourceList JSON` 规范的完整源列表，可在设置中作为订阅源导入或导出至 TVBox 等软件。
+
+---
+
+## 🛠️ 常用开发命令
+
+```bash
+# 启动本地开发热重载服务器
+npm run dev
+
+# 运行 TypeScript 类型静态检查
 npm run typecheck
+
+# 运行代码规范检查
+npm run lint
+
+# 运行单元测试套件（含解析器与核心库单测）
+npm run test
 ```
 
-测试范围、发布流程与文档结构见 [开发文档](https://libretv.is-an.org/wiki/Development.html)。
+---
 
-## 发布新版本
+## ❓ 常见问题排查
 
-版本号以 `package.json` 为单一来源，发布镜像由 GitHub Actions 自动完成：
+1. **局域网内其他设备打不开或提示未登录？**
+   - 检查 `.env` 文件中是否设置了 `COOKIE_SECURE=false`（生产模式在非 HTTPS 下如果为 true 会丢弃 Cookie）。
+   - 检查电脑防火墙是否放行了 `8080` 端口入站连接。
 
-```bash
-npm version patch       # 或 minor / major；会更新 package.json 并打 git tag
-git push && git push --tags
-```
+2. **个别影片播放提示加载失败？**
+   - 在播放器右下角点击「换源」按钮，即可切换至极速、光速、豪华、百度等其他来源，系统会自动保留当前集数与观看进度。
 
-CI 校验通过后自动构建并推送 `ghcr.io/librespark/libretv:<版本>`（详见[部署文档](https://libretv.is-an.org/wiki/Deployment.html)）。
+3. **如何修改访问密码？**
+   - 直接修改根目录下 `.env` 中的 `PASSWORD=你的新密码`，重启服务后即可生效。
 
-## 安全说明
+---
 
-- 密码只保存在服务端环境变量中，前端不持有任何可重放凭证。
-- 登录接口有 IP 速率限制（10 次 / 10 分钟）。
-- 代理内置 SSRF 防护：拒绝内网/保留地址（含 DNS 解析后校验），仅放行 http(s)。
-- 未登录会话仅允许代理图片类目标（豆瓣封面防盗链需要）。
+## 📄 开源许可证与免责声明
 
-## 衍生作品
-
-| 项目 | 说明 |
-| --- | --- |
-| [OrionTV](https://github.com/orion-lib/OrionTV) | Apple TV / Android TV 客户端（React Native TVOS + Expo），配合 MoonTV 使用 |
-| [LunaTV](https://github.com/MoonTechLab/LunaTV) | 影视聚合站（Next.js），支持 Redis / Upstash 等多存储后端 |
-| [Selene-TV](https://github.com/MoonTechLab/Selene-TV) | Android TV（Leanback）客户端，Kotlin + Compose，对接 MoonTV / Helios |
-| [EchoTV](https://github.com/hoowhoami/EchoTV) | Flutter 全平台客户端（已归档） |
-| [WarHutTV](https://github.com/OuOumm/WarHutTV) | Go + React 的自托管影视聚合站 |
-| [DecoTV](https://github.com/Decohererk/DecoTV) | 聚合播放站（原 KatelyaTV） |
-| [Joyflix](https://github.com/jeffernn/Joyflix-Mac-Objective-C) | macOS 原生影视聚合客户端（Objective-C） |
-| [MoonCakeTV](https://github.com/MoonCakeTV/MoonCakeTV) | 影视聚合搜索站（Next.js），文件存储、一键脚本部署 |
-| [OrangeTV](https://github.com/djteang/OrangeTV) | 跨平台影视聚合播放器（Next.js），Kvrocks/Redis/Upstash 多存储与多端同步 |
-
-> 旧版 LibreTV（静态 HTML + Express）完整代码见 [backup-2025 分支](https://github.com/LibreSpark/LibreTV/tree/backup-2025)。
-
-## 免责声明
-
-本项目不存储、不制作任何视频内容，仅提供第三方公开接口的聚合与播放能力，内容的合法性由对应数据源负责。
-
-☕ 觉得有用的话，可以到 [AFDIAN](https://afdian.com/a/veehub) 请我喝杯咖啡。
+- 本项目基于 [AGPL-3.0 License](./LICENSE) 开源。
+- 本项目仅提供第三方公开网络接口的聚合搜索、解析与播放内核技术支持，不存储、不上传、不分发任何影视资源文件，内容的合法性由对应数据源负责。
